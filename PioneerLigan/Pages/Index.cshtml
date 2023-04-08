@@ -1,0 +1,222 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Pioneerligan STHLM";
+
+    int count = 1;
+    var leagues = Model.LeagueVMs;
+}
+
+<div class="row">
+    <div class="col-12 text-center" id="logo-pio">PIONEER</div>
+    <div class="col-12 text-center" id="logo-league">LIGAN</div>
+    <div class="col-12 text-center" id="logo-sthlm">STHLM</div>
+    <div class="col-12 text-center"><i>Presented by</i></div>
+    <div class="col-12 text-center"><a href="https://dragonslair.se/"><img src="~/img/dl-logo.svg" alt="dragons_lair_logo" width="325px" class="pb-4" /></a></div>
+</div>
+<div claclass="row">
+    <div class="col-12">
+        New year, new leagues!
+        Spring league 1 will start 10/1 and be played in 12 events and players 7 best results will count towards their points total.
+        As usual we will cut to top 16 for the grand final. The grand final is planned for 1/4 2023.<br />
+
+        Spring league 2 will be a bit shorter. More info about spring league 2 will come closer to the start of that league.<br />
+        Entry for one event is 30kr. Proceeds will be added to the prize pool for the grand final. The prize pool in the grand final will be at least 5000kr (store credit),
+        this is guaranteed by our friends at Dragon's Lair as they are kindly providing the prizes.<br />
+        News for this year is that placing top 8 in the grouop stage will yield prizes in the form of individual cards, as usual provided by Dragon's Lair.
+    </div>
+</div>
+<div class="row mt-3 mb-1">
+    <div class="col-sm-6 col-12 mb-3">
+        <h5>Group stage prizes:</h5>
+        <ol>
+            <li>1. Inkmoth Nexus (promo)</li>
+            <li>2. Mana Confluence (promo)</li>
+            <li>3. Blood Crypt</li>
+            <li>4. Noble Hierarch (promo)</li>
+            <li>5. Overgrown Tomb</li>
+            <li>6. Cryptic Command (promo)</li>
+            <li>7. Swamp Full Art (Unhinged)</li>
+            <li>8. Swamp Full Art (Unhinged)</li>
+        </ol>
+    </div>
+    <div class="col-sm-6 col-12 mb-3">
+        <h5>Grand final prize pool (store credit):</h5>
+        <ol>
+            <li>1. 2000kr</li>
+            <li>2. 1000kr</li>
+            <li>3-4. 500kr</li>
+            <li>5-8. 250kr</li>
+        </ol>
+    </div>
+</div>
+<div class="row mt-3 mb-1">
+    <div class="col-sm-6 col-12 mb-3">
+        <h5>Prizes per event (store credit):</h5>
+        <ol>
+            <li>4-0: 100kr</li>
+            <li>3-0-1: 75kr</li>
+            <li>3-1: 50kr</li>
+        </ol>
+    </div>
+    <div class="col-sm-6 col-12 mb-3">
+        <h5>Tie breakers:</h5>
+        <ol>
+            <li>Most 4-0 results</li>
+            <li>Most 3-0-1 results</li>
+            <li>Most 3-1 results</li>
+            <li>Most 2-2 results</li>
+            <li>Most played events</li>
+            <li>Playoff match</li>
+        </ol>
+    </div>
+    <div class="col-sm-6 col-12 pink-text">
+        <i>(results in pink are NOT counted)</i>
+    </div>
+</div>
+@foreach (var league in leagues)
+{
+    {
+        count = 1;
+    }
+    <div class="row">
+        <div class="col-12 main-event-table">
+            <h2>@league.Name</h2>
+            @if (league.Winner != string.Empty)
+            {
+                <div class="row mb-1 winners"><div class="col-6" style="text-align:left">Champion: @league.Winner</div><div class="col-6" style="text-align:right">Group Stage Winner: @league.GroupStageWinner</div></div>
+            }
+            <table class="table table-striped table-dark table-responsive-stack" id="tableOne">
+                <thead>
+                    <tr>
+                        <th id="table-pos" scope="col">#</th>
+                        <th scope="col">Player Name</th>
+                        @foreach (var e in league.Events)
+                        {
+                            <th class="text-end hide-in-mobile" scope="col">@e.Date.ToString("dd/MM")</th>
+                        }
+                        <th class="text-end" scope="col">Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in league.PlayersVMs)
+                    {
+                        @if (count < 17)
+                        {
+                            <tr>
+                                <th class="green-text" scope="row">@count</th>
+                                <th scope="row">
+                                    <div class="green-text">
+                                        @p.StatBox
+                                    </div>
+                                </th>
+                                @foreach (var result in p.PlayerResults)
+                                {
+                                    @if (result.CountThis)
+                                    {
+                                        @if (result.PlayedEvent)
+                                        {
+                                            <td class="text-end hide-in-mobile">@result.Result</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-end hide-in-mobile">-</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @if (result.PlayedEvent)
+                                        {
+                                            <td class="text-end hide-in-mobile pink-text">(@result.Result)</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-end hide-in-mobile pink-text">(-)</td>
+                                        }
+                                    }
+                                }
+                                <td class="text-end">@p.DiscountedPoints <span class="pink-text">(@p.CurrentLeaguePoints)</span></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <th class="blue-text" scope="row">@count</th>
+                                <th scope="row">
+                                    <div class="blue-text">
+                                        @p.StatBox
+                                    </div>
+                                </th>
+                                @foreach (var result in p.PlayerResults)
+                                {
+                                    @if (result.CountThis)
+                                    {
+                                        @if (result.PlayedEvent)
+                                        {
+                                            <td class="text-end hide-in-mobile">@result.Result</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-end hide-in-mobile">-</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @if (result.PlayedEvent)
+                                        {
+                                            <td class="text-end hide-in-mobile pink-text">(@result.Result)</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-end hide-in-mobile pink-text">(-)</td>
+                                        }
+                                    }
+                                }
+                                <td class="text-end">@p.DiscountedPoints <span class="pink-text">(@p.CurrentLeaguePoints)</span></td>
+                            </tr>
+                        }
+                        count++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <i>(Click to see event results)</i>
+    </div>
+    <div class="row mb-5">
+        @foreach (var e in league.LeagueEventVMs)
+        {
+            <div class="col-sm-12 col-md-6 col-lg-4 event-table">
+                <span onclick="Collapser(this)" class="event-header">League event: @e.Date.ToShortDateString()</span>
+                <div id="@e.cssId" class="hideElement">
+                    <table class="table table-striped table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th class="text-end" scope="col">Points</th>
+                                <th class="text-end" scope="col">OMW%</th>
+                                <th class="text-end" scope="col">GW%</th>
+                                <th class="text-end" scope="col">OGW%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var p in e.Results)
+                            {
+                                <tr>
+                                    <th scope="row">@p.PlayerName</th>
+                                    <td class="text-end">@p.Points</td>
+                                    <td class="text-end">@p.OMW.ToString("00.0")%</td>
+                                    <td class="text-end">@p.GW.ToString("00.0")%</td>
+                                    <td class="text-end">@p.OGW.ToString("00.0")%</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+}

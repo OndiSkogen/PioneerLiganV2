@@ -1,0 +1,22 @@
+﻿@page
+@model PioneerLigan.Pages.Admin.IndexModel
+@{
+    
+}
+<div class="row">
+    @foreach (var p in Model.Folders)
+    {
+            <div class="col-2">
+                @p.Name
+                <ul>
+                    @foreach (var f in p.Files)
+                    {
+                        <li>
+                            <a class="navbar-brand" asp-area="" asp-page="/@p.Name/@f.Name">@f.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>      
+    }
+    <a class="navbar-brand" asp-area="" asp-page="/LeagueEvents/Create">Add Event</a>
+</div>

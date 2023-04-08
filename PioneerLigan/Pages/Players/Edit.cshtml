@@ -1,0 +1,60 @@
+﻿@page
+@model PioneerLigan.Pages.Players.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Player</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Player.Id" />
+            <div class="form-group">
+                <label asp-for="Player.PlayerName" class="control-label"></label>
+                <input asp-for="Player.PlayerName" class="form-control" />
+                <span asp-validation-for="Player.PlayerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Player.Events" class="control-label"></label>
+                <input asp-for="Player.Events" class="form-control" />
+                <span asp-validation-for="Player.Events" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Player.Points" class="control-label"></label>
+                <input asp-for="Player.Points" class="form-control" />
+                <span asp-validation-for="Player.Points" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Player.Wins" class="control-label"></label>
+                <input asp-for="Player.Wins" class="form-control" />
+                <span asp-validation-for="Player.Wins" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Player.Losses" class="control-label"></label>
+                <input asp-for="Player.Losses" class="form-control" />
+                <span asp-validation-for="Player.Losses" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Player.Ties" class="control-label"></label>
+                <input asp-for="Player.Ties" class="form-control" />
+                <span asp-validation-for="Player.Ties" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

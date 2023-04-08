@@ -1,0 +1,66 @@
+﻿@page
+@model PioneerLigan.Pages.Players.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].PlayerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].Events)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].Points)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].Wins)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].Losses)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].Ties)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Player) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Events)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Points)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Wins)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Losses)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ties)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

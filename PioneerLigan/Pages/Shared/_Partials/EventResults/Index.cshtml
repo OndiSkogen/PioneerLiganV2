@@ -1,0 +1,72 @@
+﻿@page
+@model PioneerLigan.Pages._Partials.EventResults.IndexModel
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EventResult[0].EventId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventResult[0].PlayerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventResult[0].Points)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventResult[0].OMW)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventResult[0].GW)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventResult[0].OGW)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventResult[0].Placement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventResult[0].PlayerName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.EventResult) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Points)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OMW)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GW)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OGW)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Placement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
