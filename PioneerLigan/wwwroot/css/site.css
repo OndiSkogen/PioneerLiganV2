@@ -543,3 +543,24 @@ blue-text .player-stats {
         display: none;
     }
 }
+
+/* ---Admin Menu--- */
+
+.admin-menu {
+    list-style: none;
+}
+
+.admin-nav-item{
+
+}
+
+.admin-nav-link {
+    padding: 0.5rem;
+    display: list-item;
+    text-decoration: none;
+}
+
+.admin-navbar {
+    border-bottom: none !important;
+}
+/* ---Admin Menu End--- */

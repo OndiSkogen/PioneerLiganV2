@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Shared\_Partials\" />
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
