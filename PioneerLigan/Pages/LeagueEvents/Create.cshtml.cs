@@ -46,10 +46,10 @@ namespace PioneerLigan.Pages.LeagueEvents
 
         [BindProperty]
         public LeagueEvent LeagueEvent { get; set; } = default!;
-        public List<Models.LeagueEvent> Events { get; set; } = new List<Models.LeagueEvent>();
-        public List<Models.LeagueEvent> DisplayEvents { get; set; } = new List<Models.LeagueEvent>();
-        public List<Models.League> Leagues { get; set; } = new List<Models.League>();
-        public List<Models.Player> Players { get; set; } = new List<Models.Player>();
+        public List<LeagueEvent> Events { get; set; } = new List<LeagueEvent>();
+        public List<LeagueEvent> DisplayEvents { get; set; } = new List<LeagueEvent>();
+        public List<League> Leagues { get; set; } = new List<League>();
+        public List<Player> Players { get; set; } = new List<Player>();
         public int SelectedLeague { get; set; }
 
 
@@ -79,102 +79,77 @@ namespace PioneerLigan.Pages.LeagueEvents
             var rows = table.SelectNodes(".//tr");
 
             // Loop through each row and extract the data from the cells
-            foreach (var row in rows)
+            for (int i = 0; i < rows.Count; i++)
             {
                 // Extract the cells in this row
-                var cells = row.SelectNodes(".//td");
+                var cells = rows[i].SelectNodes(".//td");
 
                 var eventResult = new Models.EventResult();
                 eventResult.EventId = LeagueEvent.Id;
 
                 // Loop through each cell and extract the data
-                if (cells != null)
+                if (cells != null && !string.IsNullOrEmpty(cells[0].InnerText))
                 {
-                    if (cells[0].InnerText != "")
+                    for (int j = 0; j < cells.Count; j++)
                     {
-                        for (int i = 0; i < cells.Count; i++)
-                        {
-                            // Extract the inner text of the cell
-                            var cellText = cells[i].InnerText;
-                            string[] temp;
+                        // Extract the inner text of the cell
+                        var cellText = cells[j].InnerText;
+                        string[] temp;
 
-                            // Do something with the cell text
-                            if (cellText != null)
+                        // Do something with the cell text
+                        if (cellText != null)
+                        {
+                            switch (j)
                             {
-                                switch (i)
-                                {
-                                    case 0:
-                                        eventResult.Placement = int.Parse(cellText);
-                                        break;
-                                    case 1:
-                                        eventResult.PlayerName = ExtractPlayerName(cellText);
-                                        break;
-                                    case 2:
-                                        eventResult.Points = int.Parse(cellText);
-                                        break;
-                                    case 3:
-                                        break;
-                                    case 4:
-                                        temp = cellText.Split('%');
-                                        eventResult.OMW = float.Parse(temp[0]);
-                                        break;
-                                    case 5:
-                                        temp = cellText.Split('%');
-                                        eventResult.GW = float.Parse(temp[0]);
-                                        break;
-                                    case 6:
-                                        temp = cellText.Split('%');
-                                        eventResult.OGW = float.Parse(temp[0]);
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                case 0:
+                                    eventResult.Placement = int.Parse(cellText);
+                                    break;
+                                case 1:
+                                    eventResult.PlayerName = ExtractPlayerName(cellText);
+                                    break;
+                                case 2:
+                                    eventResult.Points = int.Parse(cellText);
+                                    break;
+                                case 3:
+                                    break;
+                                case 4:
+                                    temp = cellText.Split('%');
+                                    eventResult.OMW = decimal.Parse(temp[0]);
+                                    break;
+                                case 5:
+                                    temp = cellText.Split('%');
+                                    eventResult.GW = decimal.Parse(temp[0]);
+                                    break;
+                                case 6:
+                                    temp = cellText.Split('%');
+                                    eventResult.OGW = decimal.Parse(temp[0]);
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                     }
+                }
 
-                    //int i = 0;
-                    //foreach (var cell in cells)
-                    //{
-                    //    // Extract the inner text of the cell
-                    //    var cellText = cell.InnerText;
-                    //    string[] temp;
+                if (string.IsNullOrEmpty(eventResult.PlayerName))
+                {
+                    string filePath = @"C:\Sites\Logs\Errorlog.txt";
+                    string stringToAppend = "Row: " + i + "\n" +
+                        "EventId: " + eventResult.EventId.ToString() + "\n" +
+                        "PlayerName: " + eventResult.PlayerName + "\n" +
+                        "PlayerId: " + eventResult.PlayerId.ToString() + "\n" +
+                        "Placement: " + eventResult.Placement.ToString() + "\n" +
+                        "Points: " + eventResult.Points.ToString() + "\n" +
+                        "OMW: " + eventResult.OMW.ToString() + "\n" +
+                        "GW: " + eventResult.GW.ToString() + "\n" +
+                        "OGW: " + eventResult.OGW.ToString();
 
-                    //    // Do something with the cell text
-                    //    if (cellText != null)
-                    //    {
-                    //        switch (i)
-                    //        {
-                    //            case 0:
-                    //                eventResult.Placement = int.Parse(cellText);
-                    //                break;
-                    //            case 1:
-                    //                eventResult.PlayerName = ExtractPlayerName(cellText);
-                    //                break;
-                    //            case 2:
-                    //                eventResult.Points = int.Parse(cellText);
-                    //                break;
-                    //            case 3:
-                    //                break;
-                    //            case 4:
-                    //                temp = cellText.Split('%');
-                    //                eventResult.OMW = float.Parse(temp[0]);
-                    //                break;
-                    //            case 5:
-                    //                temp = cellText.Split('%');
-                    //                eventResult.GW = float.Parse(temp[0]);
-                    //                break;
-                    //            case 6:
-                    //                temp = cellText.Split('%');
-                    //                eventResult.OGW = float.Parse(temp[0]);
-                    //                break;
-                    //            default:
-                    //                break;
-                    //        }
-                    //    }
+                    using (StreamWriter sw = new StreamWriter(filePath, true))
+                    {
+                        sw.WriteLine(stringToAppend);
+                    }
 
-                    //    i++;
-                    //}
+                    continue;
                 }
 
                 var playerExists = Players.Where(n => n.PlayerName == eventResult.PlayerName).ToList();
@@ -224,28 +199,45 @@ namespace PioneerLigan.Pages.LeagueEvents
 
             foreach (var str in splits)
             {
-                if (IsOnlyLetters(str))
+                var temp = NormalizeString(str);
+                if (IsOnlyLetters(temp))
                 {
-                    nameToExtract += str + " ";
+                    nameToExtract += temp + " ";
                 }
             }
             nameToExtract = nameToExtract.Trim();
-            nameToExtract = HandleEdgeCases(nameToExtract);
+            //nameToExtract = HandleEdgeCases(nameToExtract);
 
             return nameToExtract;
         }
 
-        private string HandleEdgeCases(string edgeCase)
+        //private string HandleEdgeCases(string edgeCase)
+        //{
+        //    switch (edgeCase.ToLower())
+        //    {
+        //        case "bo":
+        //            return "Bo Strandin Pers";
+        //        case "österberg":
+        //            return "Fredrik Österberg";
+        //        default:
+        //            return edgeCase;
+        //    }
+        //}
+
+        private string NormalizeString(string str)
         {
-            switch (edgeCase.ToLower())
+            string returnString = string.Empty;
+
+            if (string.IsNullOrEmpty(str))
             {
-                case "bo":
-                    return "Bo Strandin Pers";
-                case "österberg":
-                    return "Fredrik Österberg";
-                default:
-                    return edgeCase;
+                return returnString;
             }
+
+            returnString = str.Trim();
+            returnString = returnString.ToLower();
+            returnString = char.ToUpper(returnString[0]) + returnString.Substring(1);
+
+            return returnString;
         }
 
         private bool IsOnlyLetters(string cellText)
