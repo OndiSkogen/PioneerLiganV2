@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using PioneerLigan.Data;
+using PioneerLigan.HelperClasses;
 using PioneerLigan.Models;
 
 namespace PioneerLigan.Pages.Players
 {
-    [Authorize]
+    [Authorize(Roles = UserRoles.Admin + "," + UserRoles.User)]
     public class IndexModel : PageModel
     {
         private readonly PioneerLigan.Data.ApplicationDbContext _context;

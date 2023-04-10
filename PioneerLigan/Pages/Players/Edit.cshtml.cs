@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PioneerLigan.Data;
+using PioneerLigan.HelperClasses;
 using PioneerLigan.Models;
 
 namespace PioneerLigan.Pages.Players
 {
-    [Authorize]
+    [Authorize(Roles = UserRoles.User)]
     public class EditModel : PageModel
     {
         private readonly PioneerLigan.Data.ApplicationDbContext _context;

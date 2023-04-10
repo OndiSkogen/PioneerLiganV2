@@ -7,7 +7,7 @@ using PioneerLigan.HelperClasses;
 
 namespace PioneerLigan.Pages.Admin
 {
-    [Authorize]
+    [Authorize(Roles = UserRoles.Admin)]
     public class IndexModel : PageModel
     {
         private readonly IWebHostEnvironment _environment;
