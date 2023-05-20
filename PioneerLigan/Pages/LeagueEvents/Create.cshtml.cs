@@ -56,6 +56,10 @@ namespace PioneerLigan.Pages.LeagueEvents
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
+            var leagueId = Request.Form["league-id"];
+
+
+            
             SelectedLeague = int.Parse(Request.Form["league-id"]);
 
             if (!ModelState.IsValid || _context.LeagueEvent == null || _context.EventResult == null || _context.Player == null || SelectedLeague == 0)
@@ -66,6 +70,18 @@ namespace PioneerLigan.Pages.LeagueEvents
             LoadData();
 
             LeagueEvent.LeagueID = SelectedLeague;
+
+            string filePath = @"C:\Sites\Logs\CreateEventLog.txt";
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.WriteLine("Date: " + DateTime.Now);
+                writer.WriteLine("Selected League Id: " + SelectedLeague);
+                writer.WriteLine("League Id: " + LeagueEvent.LeagueID);
+                writer.WriteLine("Event nr: " + LeagueEvent.EventNumber);
+                writer.WriteLine("Event Date: " + LeagueEvent.Date);
+            }
+
             _context.LeagueEvent.Add(LeagueEvent);
             await _context.SaveChangesAsync();
 
@@ -84,7 +100,7 @@ namespace PioneerLigan.Pages.LeagueEvents
                 // Extract the cells in this row
                 var cells = rows[i].SelectNodes(".//td");
 
-                var eventResult = new Models.EventResult();
+                var eventResult = new EventResult();
                 eventResult.EventId = LeagueEvent.Id;
 
                 // Loop through each cell and extract the data
@@ -133,7 +149,7 @@ namespace PioneerLigan.Pages.LeagueEvents
 
                 if (string.IsNullOrEmpty(eventResult.PlayerName))
                 {
-                    string filePath = @"C:\Sites\Logs\Errorlog.txt";
+                    string errorFilePath = @"C:\Sites\Logs\Errorlog.txt";
                     string stringToAppend = "Row: " + i + "\n" +
                         "EventId: " + eventResult.EventId.ToString() + "\n" +
                         "PlayerName: " + eventResult.PlayerName + "\n" +
@@ -144,7 +160,7 @@ namespace PioneerLigan.Pages.LeagueEvents
                         "GW: " + eventResult.GW.ToString() + "\n" +
                         "OGW: " + eventResult.OGW.ToString();
 
-                    using (StreamWriter sw = new StreamWriter(filePath, true))
+                    using (StreamWriter sw = new StreamWriter(errorFilePath, true))
                     {
                         sw.WriteLine(stringToAppend);
                     }
@@ -171,7 +187,7 @@ namespace PioneerLigan.Pages.LeagueEvents
                 }
                 else
                 {
-                    var playerToAdd = new Models.Player();
+                    var playerToAdd = new Player();
 
                     playerToAdd.PlayerName = eventResult.PlayerName;
                     playerToAdd.Events = 1;

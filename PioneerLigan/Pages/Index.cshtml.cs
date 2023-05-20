@@ -16,7 +16,7 @@ namespace PioneerLigan.Pages
             _context = context;
         }
 
-        public List<ViewModels._LeagueVM> LeagueVMs { get; set; } = new List<ViewModels._LeagueVM>();
+        public List<_LeagueVM> LeagueVMs { get; set; } = new List<_LeagueVM>();
         public List<Models.League> Leagues { get; set; } = new List<Models.League>();
 
         public void OnGet()

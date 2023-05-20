@@ -14,5 +14,6 @@ namespace PioneerLigan.Data
         public DbSet<PioneerLigan.Models.LeagueEvent> LeagueEvent { get; set; } = default!;
         public DbSet<PioneerLigan.Models.League> League { get; set; } = default!;
         public DbSet<PioneerLigan.Models.Player> Player { get; set; } = default!;
+        public DbSet<PioneerLigan.Models.User> User { get; set; } = default!;
     }
 }
