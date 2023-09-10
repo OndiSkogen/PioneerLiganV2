@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PioneerLigan.Models;
 
@@ -10,10 +11,34 @@ namespace PioneerLigan.Data
             : base(options)
         {
         }
-        public DbSet<PioneerLigan.Models.EventResult> EventResult { get; set; } = default!;
-        public DbSet<PioneerLigan.Models.LeagueEvent> LeagueEvent { get; set; } = default!;
-        public DbSet<PioneerLigan.Models.League> League { get; set; } = default!;
-        public DbSet<PioneerLigan.Models.Player> Player { get; set; } = default!;
-        public DbSet<PioneerLigan.Models.User> User { get; set; } = default!;
+        public DbSet<EventResult> EventResult { get; set; } = default!;
+        public DbSet<LeagueEvent> LeagueEvent { get; set; } = default!;
+        public DbSet<League> League { get; set; } = default!;
+        public DbSet<Player> Player { get; set; } = default!;
+        public DbSet<User> User { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EventResult>()
+                .Property(e => e.OMW)
+                .HasColumnType("decimal(5, 2)");
+
+            modelBuilder.Entity<EventResult>()
+                .Property(e => e.OGW)
+                .HasColumnType("decimal(5, 2)");
+
+            modelBuilder.Entity<EventResult>()
+                .Property(e => e.GW)
+                .HasColumnType("decimal(5, 2)");
+
+            modelBuilder.Entity<IdentityUserLogin<string>>()
+                .HasNoKey();
+
+            modelBuilder.Entity<IdentityUserRole<string>>()
+                .HasNoKey();
+
+            modelBuilder.Entity<IdentityUserToken<string>>()
+                .HasNoKey();
+        }
     }
 }
