@@ -1,10 +1,12 @@
 ﻿@page
 @model PioneerLigan.ViewModels._UserVM
 
-<div class="row">
+
+<div>Hello World!</div>
+@* <div class="row">
     <div class="col-md-6">
         <div class="d-flex align-items-center">
-            <img src="@Model.ImgUrl" alt="Profile Picture" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+            @* <img src="@Model.ImgUrl" alt="Profile Picture" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;"> 
             <div class="ml-3">
                 <h3>@Model.FirstName @Model.LastName</h3>
             </div>
@@ -18,9 +20,9 @@
         </div>
     </div>
     <div class="col-md-6"></div>
-</div>
+</div> *@
 
-<div>
+@* <div>
     <h4>Latest Scores</h4>
     <ul>
         @foreach (var score in Model.LatestScores)
@@ -28,5 +30,5 @@
             <li>@score.ToString()</li>
         }
     </ul>
-</div>
+</div> *@
 

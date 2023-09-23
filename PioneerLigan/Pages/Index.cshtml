@@ -5,6 +5,7 @@
 
     int count = 1;
     var leagues = Model.LeagueVMs;
+    var topPlayers = Model.TopPlayers;
 }
 
 <div class="row">
@@ -16,28 +17,26 @@
 </div>
 <div claclass="row">
     <div class="col-12">
-        New year, new leagues!
-        Spring league 1 will start 10/1 and be played in 12 events and players 7 best results will count towards their points total.
-        As usual we will cut to top 16 for the grand final. The grand final is planned for 1/4 2023.<br />
+        Welcome to the autumn!
+        The autumn league will be played in 16 events and the 9 best results for each player will be counted, then as usual the top 16 players will qualify for the grand final. 
+        The league starts at 29/8 and final event will be played 12/12. Preliminary date for the grand final is 16/12.<br />
 
-        Spring league 2 will be a bit shorter. More info about spring league 2 will come closer to the start of that league.<br />
         Entry for one event is 30kr. Proceeds will be added to the prize pool for the grand final. The prize pool in the grand final will be at least 5000kr (store credit),
-        this is guaranteed by our friends at Dragon's Lair as they are kindly providing the prizes.<br />
-        News for this year is that placing top 8 in the grouop stage will yield prizes in the form of individual cards, as usual provided by Dragon's Lair.
+        this is guaranteed by our friends at Dragon's Lair as they are kindly providing the prizes.
     </div>
 </div>
 <div class="row mt-3 mb-1">
     <div class="col-sm-6 col-12 mb-3">
         <h5>Group stage prizes:</h5>
         <ol>
-            <li>1. Inkmoth Nexus (promo)</li>
-            <li>2. Mana Confluence (promo)</li>
-            <li>3. Blood Crypt</li>
-            <li>4. Noble Hierarch (promo)</li>
-            <li>5. Overgrown Tomb</li>
-            <li>6. Cryptic Command (promo)</li>
-            <li>7. Swamp Full Art (Unhinged)</li>
-            <li>8. Swamp Full Art (Unhinged)</li>
+            <li>1. Inkmoth Nexus Foil Promo + Foil Promo Pack</li>
+            <li>2. Noble Hierarch Foil Promo + Foil Promo Pack</li>
+            <li>3. Cryptic Command Foil Promo + Foil Promo Pack</li>
+            <li>4. Cryptic Command Foil Promo + Foil Promo Pack</li>
+            <li>5. Unhinged Basic Land + Foil Promo Pack</li>
+            <li>6. Unhinged Basic Land + Foil Promo Pack</li>
+            <li>7. Unhinged Basic Land + Foil Promo Pack</li>
+            <li>8. Unhinged Basic Land + Foil Promo Pack</li>
         </ol>
     </div>
     <div class="col-sm-6 col-12 mb-3">
@@ -70,6 +69,44 @@
             <li>Playoff match</li>
         </ol>
     </div>
+    <div class="col-sm-6 col-12 mb-3" id="allTime">
+        <h2>All time points leaders</h2>
+        <table class="table table-striped table-dark table-responsive-stack" id="tableAll">
+            <thead>
+                <tr>
+                    <th id="table-pos" scope="col">#</th>
+                    <th scope="col">Player Name</th>
+                    <th class="text-end hide-in-mobile" scope="col">GSW</th>
+                    <th class="text-end hide-in-mobile" scope="col">LW</th>
+                    <th class="text-end hide-in-mobile" scope="col">Points/Event</th>
+                    <th class="text-end hide-in-mobile" scope="col">Win %</th>
+                    <th class="text-end" scope="col">Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var topPlayer in topPlayers)
+                {
+                    <tr>
+                        <th class="green-text" scope="row">@count</th>
+                        <th scope="row">
+                            <div class="green-text">
+                                @topPlayer.StatBox
+                            </div>
+                        </th>
+                        <td class="text-end hide-in-mobile">@topPlayer.GroupStageWins</td>
+                        <td class="text-end hide-in-mobile">@topPlayer.LeagueWins</td>
+                        <td class="text-end hide-in-mobile">@topPlayer.AvgPoints.ToString("0.00")</td>
+                        <td class="text-end hide-in-mobile">@topPlayer.WinPercentage</td>
+                        <td class="text-end">@topPlayer.LifeTimePoints</td>
+                    </tr>
+                    count++;
+                }
+            </tbody>
+        </table>
+        <span>GSW = Group Stage Winner | LW = League Wins</span>
+    </div>
+</div>
+<div class="row mt-3 mb-1">
     <div class="col-sm-6 col-12 pink-text">
         <i>(results in pink are NOT counted)</i>
     </div>

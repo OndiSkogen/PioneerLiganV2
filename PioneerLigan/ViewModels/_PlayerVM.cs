@@ -21,8 +21,43 @@ namespace PioneerLigan.ViewModels
         public int LifeTimePoints { get; set; } = 0;
         public double AvgPoints { get; set; } = 0;
         public HtmlString StatBox { get; set; }
+        public string WinPercentage { get; set; }
+        public int PlayedMatches { get; set; }
+        public int LeagueWins { get; set; } = 0;
+        public int GroupStageWins { get; set; } = 0;
 
-        public _PlayerVM(Models.Player player, _LeagueVM league)
+        public _PlayerVM(Player player, List<League> leagues)
+        {
+            Name = player.PlayerName;
+            Events = player.Events;
+            CurrentLeaguePoints = 0;
+            PlayerResults = new List<ResultObject>();
+            LifeTimePoints = player.Points;
+            Wins = player.Wins;
+            Ties = player.Ties;
+            Losses = player.Losses;
+            AvgPoints = (player.Points / (double)player.Events);
+            StatBox = BuildStatBox();
+            var percentage = GetWinPercentage(player.Wins, player.Ties, player.Losses);
+            WinPercentage = percentage.ToString("0.00");
+            PlayedMatches = GetTotalMatches(Wins, Ties, Losses);
+
+            foreach (var league in leagues)
+            {
+                if (league.GroupStageWinner == Name)
+                                   {
+                    GroupStageWins++;
+                }
+
+                if (league.Winner == Name)
+                {
+                    LeagueWins++;
+                }
+                
+            }
+        }
+
+        public _PlayerVM(Player player, _LeagueVM league)
         {
             int id = 0;
             Name = player.PlayerName;
@@ -34,9 +69,12 @@ namespace PioneerLigan.ViewModels
             Ties = player.Ties;
             Losses = player.Losses;
             AvgPoints = player.Points / (double)player.Events;
-
+            var percentage = GetWinPercentage(player.Wins, player.Ties, player.Losses);
+            WinPercentage = percentage.ToString("0.00");
+            
             foreach (var ev in league.Events)
             {
+                
                 var er = league.Results.Where(i => i.PlayerId == player.Id && i.EventId == ev.Id);
 
                 if (er.Any())
@@ -51,21 +89,30 @@ namespace PioneerLigan.ViewModels
                 }
                 id++;
             }
-            CalculatePoints();
+            CalculatePoints(league.EventsToCount);
             StatBox = BuildStatBox();
         }
 
-
         private HtmlString BuildStatBox()
         {
-            float playedMatches = Wins + Ties + Losses;
-            float winPercentage = (Wins / playedMatches) * 100;
+            float winPercentage = GetWinPercentage(Wins, Ties, Losses);
             HtmlString returnString = new HtmlString(string.Format(@"<button href='abc' class='player-stats' data-bs-toggle='tooltip' data-bs-html='true'
                             data-bs-placement='left' data-bs-title='Lifetime stats:<br>Points: {0}<br>Wins: {1}<br>Ties: {2}<br>Losses: {3}<br>Average points: {4}<br>
                             Win %: {5}%'>{6}</button>",
                            LifeTimePoints, Wins, Ties, Losses, AvgPoints.ToString("0.00"), winPercentage.ToString("0.00"), Name));
 
             return returnString;
+        }
+
+        private int GetTotalMatches(int wins, int ties, int losses)
+        {
+            return wins + ties + losses;
+        }
+
+        private float GetWinPercentage(float wins, float ties, float losses)
+        {
+            var total = wins + ties + losses;
+            return (wins / total) * 100;
         }
 
         private void AddTieBreakers(int points)
@@ -89,11 +136,11 @@ namespace PioneerLigan.ViewModels
             }
         }
 
-        private void CalculatePoints()
+        private void CalculatePoints(int eventsToCount)
         {
             List<ResultObject> returnResults = PlayerResults;
             returnResults = returnResults.OrderByDescending(p => p.Result).ToList();
-            returnResults = returnResults.Take(7).ToList();
+            returnResults = returnResults.Take(eventsToCount).ToList();
             foreach (var r in PlayerResults)
             {
                 if (returnResults.Contains(r))

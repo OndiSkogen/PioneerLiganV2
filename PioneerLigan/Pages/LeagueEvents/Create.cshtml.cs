@@ -222,23 +222,9 @@ namespace PioneerLigan.Pages.LeagueEvents
                 }
             }
             nameToExtract = nameToExtract.Trim();
-            //nameToExtract = HandleEdgeCases(nameToExtract);
 
             return nameToExtract;
         }
-
-        //private string HandleEdgeCases(string edgeCase)
-        //{
-        //    switch (edgeCase.ToLower())
-        //    {
-        //        case "bo":
-        //            return "Bo Strandin Pers";
-        //        case "österberg":
-        //            return "Fredrik Österberg";
-        //        default:
-        //            return edgeCase;
-        //    }
-        //}
 
         private string NormalizeString(string str)
         {

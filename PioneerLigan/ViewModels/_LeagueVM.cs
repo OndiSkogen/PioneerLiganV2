@@ -12,6 +12,7 @@ namespace PioneerLigan.ViewModels
         public List<_LeagueEventVM> LeagueEventVMs { get; set; } = new List<_LeagueEventVM>();
         public string GroupStageWinner { get; set; } = string.Empty;
         public string Winner { get; set; } = string.Empty;
+        public int EventsToCount { get; set; } = 0;
 
         public _LeagueVM(List<Models.LeagueEvent> events, List<Models.Player> players, List<Models.EventResult> eventResults, Models.League league)
         {
@@ -20,6 +21,7 @@ namespace PioneerLigan.ViewModels
             Winner = league.Winner;
             Events = events.Where(i => i.LeagueID == league.Id).OrderBy(ev => ev.EventNumber).ToList();
             Players = players.ToList();
+            EventsToCount = league.NumberOfEventsToCount;
 
             foreach (var ev in Events)
             {
