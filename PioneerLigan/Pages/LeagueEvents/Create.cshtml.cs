@@ -28,7 +28,19 @@ namespace PioneerLigan.Pages.LeagueEvents
         public IActionResult OnGet(string? selectedId)
         {
             LoadData();
-            DeckInfoList = new List<DeckInfo>(28);
+            DeckInfoList = new List<DeckInfo>();
+
+            for (int i = 0; i < 28; i++)
+            {
+                DeckInfoList.Add(new DeckInfo { DeckName = string.Empty, NoOfDecks = 0 });
+            }
+
+            DeckNames = new List<string>
+            {
+                "A Deck Name 1",
+                "D Deck Name 2",
+                "H Deck Name 3",
+            };
 
             if (selectedId != null)
             {
@@ -54,6 +66,7 @@ namespace PioneerLigan.Pages.LeagueEvents
         public List<Player> Players { get; set; } = new List<Player>();
         public int SelectedLeague { get; set; }
         public List<DeckInfo> DeckInfoList { get; set; }
+        public List<string> DeckNames { get; set; }
 
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -62,7 +75,7 @@ namespace PioneerLigan.Pages.LeagueEvents
             var leagueId = Request.Form["league-id"];
 
 
-            
+
             SelectedLeague = int.Parse(Request.Form["league-id"]);
 
             if (!ModelState.IsValid || _context.LeagueEvent == null || _context.EventResult == null || _context.Player == null || SelectedLeague == 0)

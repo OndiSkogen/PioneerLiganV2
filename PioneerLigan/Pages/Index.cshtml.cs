@@ -18,6 +18,7 @@ namespace PioneerLigan.Pages
 
         public List<_LeagueVM> LeagueVMs { get; set; } = new List<_LeagueVM>();
         public List<_PlayerVM> TopPlayers { get; set; } = new List<_PlayerVM>();
+        public _MetaGameVM? MetaGame { get; set; }
 
         public void OnGet()
         {
@@ -26,6 +27,8 @@ namespace PioneerLigan.Pages
                 var leagues = _context.League.OrderByDescending(i => i.Id).ToList();
                 var players = from p in _context.Player select p;
                 var topPlayers = players.OrderByDescending(p => p.Points).Take(10).ToList();
+                var eventResults = from e in _context.EventResult select e;
+                var events = from e in _context.LeagueEvent select e;
 
                 foreach (var player in topPlayers)
                 {
@@ -34,10 +37,8 @@ namespace PioneerLigan.Pages
 
                 foreach (var league in leagues)
                 {
-                    var events = from e in _context.LeagueEvent where e.LeagueID == league.Id select e;
-                    var eventResults = from e in _context.EventResult select e;
 
-                    var tempLeague = new _LeagueVM(events.ToList(), players.ToList(), eventResults.ToList(), league);
+                    var tempLeague = new _LeagueVM(events.Where(e => e.LeagueID == league.Id).ToList(), players.ToList(), eventResults.ToList(), league);
 
                     foreach (var player in tempLeague.Players)
                     {
@@ -49,6 +50,17 @@ namespace PioneerLigan.Pages
                             .ThenByDescending(p => p.ThreeOne).ThenByDescending(p => p.TuTu).ThenByDescending(p => p.Events).ToList();
 
                     LeagueVMs.Add(tempLeague);
+                }
+
+                if (events.Any())
+                {
+                    //var daEvent = events.OrderByDescending(e => e.Date).First();
+                    //MetaGame = new _MetaGameVM(daEvent.MetaGame, daEvent.Date);
+                    MetaGame = null;
+                }
+                else
+                {
+                    MetaGame = null;
                 }
             }
         }
