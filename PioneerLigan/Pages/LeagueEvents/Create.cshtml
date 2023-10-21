@@ -172,6 +172,37 @@
             <div class="form-group" hidden>
                 <input name="league-id" type="text" value="@selectedLeague" />
             </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="player-name">
+                            <label class="control-label">Deck name</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <div class="points text-end">
+                            <label class="control-label">No of decks</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @for (int i = 0; i < 28; i++)
+            {
+                <div class="row">
+                    <div class="col-sm-3 mb-2">
+                        <div class="form-group">
+                            <input asp-for="DeckInfoList[i].DeckName" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                            <input asp-for="DeckInfoList[i].NoOfDecks" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            }
             <button type="submit">Submit</button>
         </form>
     </div>

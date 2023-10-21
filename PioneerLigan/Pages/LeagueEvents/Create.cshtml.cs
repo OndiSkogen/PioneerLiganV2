@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using PioneerLigan.Data;
 using PioneerLigan.Models;
 
@@ -27,6 +28,7 @@ namespace PioneerLigan.Pages.LeagueEvents
         public IActionResult OnGet(string? selectedId)
         {
             LoadData();
+            DeckInfoList = new List<DeckInfo>(28);
 
             if (selectedId != null)
             {
@@ -51,6 +53,7 @@ namespace PioneerLigan.Pages.LeagueEvents
         public List<League> Leagues { get; set; } = new List<League>();
         public List<Player> Players { get; set; } = new List<Player>();
         public int SelectedLeague { get; set; }
+        public List<DeckInfo> DeckInfoList { get; set; }
 
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -70,6 +73,7 @@ namespace PioneerLigan.Pages.LeagueEvents
             LoadData();
 
             LeagueEvent.LeagueID = SelectedLeague;
+            LeagueEvent.MetaGame = JsonConvert.SerializeObject(DeckInfoList);
 
             string filePath = @"C:\Sites\Logs\CreateEventLog.txt";
 
@@ -204,7 +208,7 @@ namespace PioneerLigan.Pages.LeagueEvents
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./");
         }
 
         private string ExtractPlayerName(string cellText)
@@ -354,6 +358,18 @@ namespace PioneerLigan.Pages.LeagueEvents
         public string PointsPlayer(int id)
         {
             var str = "points" + id.ToString();
+            return str;
+        }
+
+        public string DeckName(int id)
+        {
+            var str = "deck" + id.ToString();
+            return str;
+        }
+
+        public string NoOfDecks(int id)
+        {
+            var str = "noOfDecks" + id.ToString();
             return str;
         }
     }
