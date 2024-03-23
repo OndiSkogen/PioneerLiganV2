@@ -23,9 +23,9 @@ namespace PioneerLigan.Pages._Partials.EventResults
 
         public async Task OnGetAsync()
         {
-            if (_context.EventResult != null)
+            if (_context.EventResults != null)
             {
-                EventResult = await _context.EventResult.ToListAsync();
+                EventResult = await _context.EventResults.ToListAsync();
             }
         }
     }

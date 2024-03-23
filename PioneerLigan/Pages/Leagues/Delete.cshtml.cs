@@ -26,12 +26,12 @@ namespace PioneerLigan.Pages.Leagues
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.League == null)
+            if (id == null || _context.Leagues == null)
             {
                 return NotFound();
             }
 
-            var league = await _context.League.FirstOrDefaultAsync(m => m.Id == id);
+            var league = await _context.Leagues.FirstOrDefaultAsync(m => m.Id == id);
 
             if (league == null)
             {
@@ -46,16 +46,16 @@ namespace PioneerLigan.Pages.Leagues
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.League == null)
+            if (id == null || _context.Leagues == null)
             {
                 return NotFound();
             }
-            var league = await _context.League.FindAsync(id);
+            var league = await _context.Leagues.FindAsync(id);
 
             if (league != null)
             {
                 League = league;
-                _context.League.Remove(League);
+                _context.Leagues.Remove(League);
                 await _context.SaveChangesAsync();
             }
 

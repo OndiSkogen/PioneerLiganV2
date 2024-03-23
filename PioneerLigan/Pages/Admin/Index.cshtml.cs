@@ -94,7 +94,7 @@ namespace PioneerLigan.Pages.Admin
                     {
                         foreach (var e in specificElements)
                         {
-                            var playersEntities = from p in _context.Player select p;
+                            var playersEntities = from p in _context.Players select p;
                             var players = playersEntities.ToList();
 
                             var leagueEvent = new LeagueEvent();
@@ -128,7 +128,7 @@ namespace PioneerLigan.Pages.Admin
                             }
 
                             events.Add(leagueEvent);
-                            var addedEntity = _context.LeagueEvent.Add(leagueEvent);
+                            var addedEntity = _context.LeagueEvents.Add(leagueEvent);
 
                             // Extract and process the table data
                             var table = e.SelectSingleNode(".//table[@class='table table-striped table-dark']");
@@ -162,12 +162,12 @@ namespace PioneerLigan.Pages.Admin
 
                                             playerToUpdate = AddWinLossTie(playerToUpdate, eventResult.Points);
 
-                                            _context.Player.Update(playerToUpdate);
+                                            _context.Players.Update(playerToUpdate);
                                             await _context.SaveChangesAsync();
 
                                             eventResult.PlayerId = playerToUpdate.Id;
 
-                                            _context.EventResult.Add(eventResult);
+                                            _context.EventResults.Add(eventResult);
                                             await _context.SaveChangesAsync();
                                         }
                                         else
@@ -180,11 +180,11 @@ namespace PioneerLigan.Pages.Admin
 
                                             playerToAdd = AddWinLossTie(playerToAdd, eventResult.Points);
 
-                                            _context.Player.Add(playerToAdd);
+                                            _context.Players.Add(playerToAdd);
                                             await _context.SaveChangesAsync();
 
                                             eventResult.PlayerId = playerToAdd.Id;
-                                            _context.EventResult.Add(eventResult);
+                                            _context.EventResults.Add(eventResult);
                                             await _context.SaveChangesAsync();
                                         }
                                         placement++;

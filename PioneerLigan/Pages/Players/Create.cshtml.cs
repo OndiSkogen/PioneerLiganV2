@@ -33,12 +33,12 @@ namespace PioneerLigan.Pages.Players
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Player == null || Player == null)
+          if (!ModelState.IsValid || _context.Players == null || Player == null)
             {
                 return Page();
             }
 
-            _context.Player.Add(Player);
+            _context.Players.Add(Player);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

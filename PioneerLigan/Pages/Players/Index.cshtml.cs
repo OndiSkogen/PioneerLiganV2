@@ -26,9 +26,9 @@ namespace PioneerLigan.Pages.Players
 
         public async Task OnGetAsync()
         {
-            if (_context.Player != null)
+            if (_context.Players != null)
             {
-                Player = await _context.Player.ToListAsync();
+                Player = await _context.Players.ToListAsync();
             }
         }
     }

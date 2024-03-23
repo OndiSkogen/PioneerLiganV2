@@ -78,7 +78,7 @@ namespace PioneerLigan.Pages.LeagueEvents
 
             SelectedLeague = int.Parse(Request.Form["league-id"]);
 
-            if (!ModelState.IsValid || _context.LeagueEvent == null || _context.EventResult == null || _context.Player == null || SelectedLeague == 0)
+            if (!ModelState.IsValid || _context.LeagueEvents == null || _context.EventResults == null || _context.Players == null || SelectedLeague == 0)
             {
                 return Page();
             }
@@ -99,7 +99,7 @@ namespace PioneerLigan.Pages.LeagueEvents
                 writer.WriteLine("Event Date: " + LeagueEvent.Date);
             }
 
-            _context.LeagueEvent.Add(LeagueEvent);
+            _context.LeagueEvents.Add(LeagueEvent);
             await _context.SaveChangesAsync();
 
             var doc = new HtmlDocument();
@@ -169,7 +169,7 @@ namespace PioneerLigan.Pages.LeagueEvents
                     string errorFilePath = @"C:\Sites\Logs\Errorlog.txt";
                     string stringToAppend = "Row: " + i + "\n" +
                         "EventId: " + eventResult.EventId.ToString() + "\n" +
-                        "PlayerName: " + eventResult.PlayerName + "\n" +
+                        "PlayerName: " + "\n" +
                         "PlayerId: " + eventResult.PlayerId.ToString() + "\n" +
                         "Placement: " + eventResult.Placement.ToString() + "\n" +
                         "Points: " + eventResult.Points.ToString() + "\n" +
@@ -194,12 +194,12 @@ namespace PioneerLigan.Pages.LeagueEvents
 
                     playerToUpdate = AddWinLossTie(playerToUpdate, eventResult.Points);
 
-                    _context.Player.Update(playerToUpdate);
+                    _context.Players.Update(playerToUpdate);
                     await _context.SaveChangesAsync();
 
                     eventResult.PlayerId = playerToUpdate.Id;
 
-                    _context.EventResult.Add(eventResult);
+                    _context.EventResults.Add(eventResult);
                     await _context.SaveChangesAsync();
                 }
                 else
@@ -212,11 +212,11 @@ namespace PioneerLigan.Pages.LeagueEvents
 
                     playerToAdd = AddWinLossTie(playerToAdd, eventResult.Points);
 
-                    _context.Player.Add(playerToAdd);
+                    _context.Players.Add(playerToAdd);
                     await _context.SaveChangesAsync();
 
                     eventResult.PlayerId = playerToAdd.Id;
-                    _context.EventResult.Add(eventResult);
+                    _context.EventResults.Add(eventResult);
                     await _context.SaveChangesAsync();
                 }
             }
@@ -270,11 +270,11 @@ namespace PioneerLigan.Pages.LeagueEvents
 
         private void LoadData()
         {
-            var leagues = from l in _context.League select l;
+            var leagues = from l in _context.Leagues select l;
             Leagues = leagues.OrderBy(l => l.Id).ToList();
-            var events = from e in _context.LeagueEvent select e;
+            var events = from e in _context.LeagueEvents select e;
             Events = events.OrderBy(l => l.Id).ToList();
-            var players = from p in _context.Player select p;
+            var players = from p in _context.Players select p;
             Players = players.ToList();
         }
 

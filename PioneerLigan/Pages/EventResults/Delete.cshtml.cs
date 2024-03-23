@@ -24,12 +24,12 @@ namespace PioneerLigan.Pages._Partials.EventResults
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.EventResult == null)
+            if (id == null || _context.EventResults == null)
             {
                 return NotFound();
             }
 
-            var eventresult = await _context.EventResult.FirstOrDefaultAsync(m => m.Id == id);
+            var eventresult = await _context.EventResults.FirstOrDefaultAsync(m => m.Id == id);
 
             if (eventresult == null)
             {
@@ -44,16 +44,16 @@ namespace PioneerLigan.Pages._Partials.EventResults
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.EventResult == null)
+            if (id == null || _context.EventResults == null)
             {
                 return NotFound();
             }
-            var eventresult = await _context.EventResult.FindAsync(id);
+            var eventresult = await _context.EventResults.FindAsync(id);
 
             if (eventresult != null)
             {
                 EventResult = eventresult;
-                _context.EventResult.Remove(EventResult);
+                _context.EventResults.Remove(EventResult);
                 await _context.SaveChangesAsync();
             }
 

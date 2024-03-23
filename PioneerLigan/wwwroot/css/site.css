@@ -378,6 +378,10 @@ body {
     color: #FFF;
 }
 
+.table > :not(caption) > * > * {
+    padding: .5rem .1rem !important;
+}
+
 table {
     border-radius: 10px;
 }

@@ -11,11 +11,12 @@ namespace PioneerLigan.Data
             : base(options)
         {
         }
-        public DbSet<EventResult> EventResult { get; set; } = default!;
-        public DbSet<LeagueEvent> LeagueEvent { get; set; } = default!;
-        public DbSet<League> League { get; set; } = default!;
-        public DbSet<Player> Player { get; set; } = default!;
+        public DbSet<EventResult> EventResults { get; set; } = default!;
+        public DbSet<LeagueEvent> LeagueEvents { get; set; } = default!;
+        public DbSet<League> Leagues { get; set; } = default!;
+        public DbSet<Player> Players { get; set; } = default!;
         public DbSet<User> User { get; set; } = default!;
+        public DbSet<DeckName> DeckNames { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

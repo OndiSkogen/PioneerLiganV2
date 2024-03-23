@@ -27,12 +27,12 @@ namespace PioneerLigan.Pages.Leagues
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.League == null)
+            if (id == null || _context.Leagues == null)
             {
                 return NotFound();
             }
 
-            var league =  await _context.League.FirstOrDefaultAsync(m => m.Id == id);
+            var league =  await _context.Leagues.FirstOrDefaultAsync(m => m.Id == id);
             if (league == null)
             {
                 return NotFound();
@@ -73,7 +73,7 @@ namespace PioneerLigan.Pages.Leagues
 
         private bool LeagueExists(int id)
         {
-          return (_context.League?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Leagues?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

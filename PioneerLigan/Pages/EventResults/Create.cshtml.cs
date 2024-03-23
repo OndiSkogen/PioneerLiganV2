@@ -31,12 +31,12 @@ namespace PioneerLigan.Pages._Partials.EventResults
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.EventResult == null || EventResult == null)
+          if (!ModelState.IsValid || _context.EventResults == null || EventResult == null)
             {
                 return Page();
             }
 
-            _context.EventResult.Add(EventResult);
+            _context.EventResults.Add(EventResult);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

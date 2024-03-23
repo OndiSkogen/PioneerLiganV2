@@ -22,13 +22,13 @@ namespace PioneerLigan.Pages
 
         public void OnGet()
         {
-            if (_context.League != null)
+            if (_context.Leagues != null)
             {
-                var leagues = _context.League.OrderByDescending(i => i.Id).ToList();
-                var players = from p in _context.Player select p;
+                var leagues = _context.Leagues.OrderByDescending(i => i.Id).ToList();
+                var players = from p in _context.Players select p;
                 var topPlayers = players.OrderByDescending(p => p.Points).Take(10).ToList();
-                var eventResults = from e in _context.EventResult select e;
-                var events = from e in _context.LeagueEvent select e;
+                var eventResults = from e in _context.EventResults select e;
+                var events = from e in _context.LeagueEvents select e;
 
                 foreach (var player in topPlayers)
                 {

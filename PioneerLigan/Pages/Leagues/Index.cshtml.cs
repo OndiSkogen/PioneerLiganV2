@@ -25,9 +25,9 @@ namespace PioneerLigan.Pages.Leagues
 
         public async Task OnGetAsync()
         {
-            if (_context.League != null)
+            if (_context.Leagues != null)
             {
-                League = await _context.League.ToListAsync();
+                League = await _context.Leagues.ToListAsync();
             }
         }
     }

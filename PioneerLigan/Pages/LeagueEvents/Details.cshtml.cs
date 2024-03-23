@@ -25,12 +25,12 @@ namespace PioneerLigan.Pages.LeagueEvents
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.LeagueEvent == null)
+            if (id == null || _context.LeagueEvents == null)
             {
                 return NotFound();
             }
 
-            var leagueevent = await _context.LeagueEvent.FirstOrDefaultAsync(m => m.Id == id);
+            var leagueevent = await _context.LeagueEvents.FirstOrDefaultAsync(m => m.Id == id);
             if (leagueevent == null)
             {
                 return NotFound();

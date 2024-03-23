@@ -28,12 +28,12 @@ namespace PioneerLigan.Pages.Players
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Player == null)
+            if (id == null || _context.Players == null)
             {
                 return NotFound();
             }
 
-            var player =  await _context.Player.FirstOrDefaultAsync(m => m.Id == id);
+            var player =  await _context.Players.FirstOrDefaultAsync(m => m.Id == id);
             if (player == null)
             {
                 return NotFound();
@@ -74,7 +74,7 @@ namespace PioneerLigan.Pages.Players
 
         private bool PlayerExists(int id)
         {
-          return (_context.Player?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Players?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

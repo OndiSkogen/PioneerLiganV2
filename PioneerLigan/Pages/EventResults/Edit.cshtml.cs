@@ -25,12 +25,12 @@ namespace PioneerLigan.Pages._Partials.EventResults
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.EventResult == null)
+            if (id == null || _context.EventResults == null)
             {
                 return NotFound();
             }
 
-            var eventresult =  await _context.EventResult.FirstOrDefaultAsync(m => m.Id == id);
+            var eventresult =  await _context.EventResults.FirstOrDefaultAsync(m => m.Id == id);
             if (eventresult == null)
             {
                 return NotFound();
@@ -71,7 +71,7 @@ namespace PioneerLigan.Pages._Partials.EventResults
 
         private bool EventResultExists(int id)
         {
-          return (_context.EventResult?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.EventResults?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
