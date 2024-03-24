@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PioneerLigan.Data;
 
@@ -11,9 +12,11 @@ using PioneerLigan.Data;
 namespace PioneerLigan.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240324115024_MetaGameNew")]
+    partial class MetaGameNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,7 +189,7 @@ namespace PioneerLigan.Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("PioneerLigan.Models.Deck", b =>
+            modelBuilder.Entity("PioneerLigan.Models.DeckName", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,26 +197,13 @@ namespace PioneerLigan.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ColorAffiliation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MetaGameId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SuperArcheType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MetaGameId");
-
-                    b.ToTable("Decks");
+                    b.ToTable("DeckNames");
                 });
 
             modelBuilder.Entity("PioneerLigan.Models.EventResult", b =>
@@ -302,27 +292,13 @@ namespace PioneerLigan.Data.Migrations
                     b.Property<int>("LeagueID")
                         .HasColumnType("int");
 
+                    b.Property<string>("MetaGame")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("LeagueEvents");
-                });
-
-            modelBuilder.Entity("PioneerLigan.Models.MetaGame", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("LeagueEventId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LeagueEventId");
-
-                    b.ToTable("MetaGames");
                 });
 
             modelBuilder.Entity("PioneerLigan.Models.Player", b =>
@@ -383,33 +359,6 @@ namespace PioneerLigan.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("PioneerLigan.Models.Deck", b =>
-                {
-                    b.HasOne("PioneerLigan.Models.MetaGame", "MetaGame")
-                        .WithMany("Decks")
-                        .HasForeignKey("MetaGameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MetaGame");
-                });
-
-            modelBuilder.Entity("PioneerLigan.Models.MetaGame", b =>
-                {
-                    b.HasOne("PioneerLigan.Models.LeagueEvent", "LeagueEvent")
-                        .WithMany()
-                        .HasForeignKey("LeagueEventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LeagueEvent");
-                });
-
-            modelBuilder.Entity("PioneerLigan.Models.MetaGame", b =>
-                {
-                    b.Navigation("Decks");
                 });
 #pragma warning restore 612, 618
         }

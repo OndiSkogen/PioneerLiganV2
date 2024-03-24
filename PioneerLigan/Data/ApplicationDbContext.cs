@@ -16,7 +16,8 @@ namespace PioneerLigan.Data
         public DbSet<League> Leagues { get; set; } = default!;
         public DbSet<Player> Players { get; set; } = default!;
         public DbSet<User> User { get; set; } = default!;
-        public DbSet<DeckName> DeckNames { get; set; } = default!;
+        public DbSet<Deck> Decks { get; set; } = default!;
+        public DbSet<MetaGame> MetaGames { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PioneerLigan.Data;
+using PioneerLigan.HelperClasses;
 using PioneerLigan.Models;
 
 namespace PioneerLigan.Pages.LeagueEvents
@@ -28,11 +29,11 @@ namespace PioneerLigan.Pages.LeagueEvents
         public IActionResult OnGet(string? selectedId)
         {
             LoadData();
-            DeckInfoList = new List<DeckInfo>();
+            DeckInfoList = new List<Deck>();
 
             for (int i = 0; i < 28; i++)
             {
-                DeckInfoList.Add(new DeckInfo { DeckName = string.Empty, NoOfDecks = 0 });
+                DeckInfoList.Add(new Deck { Name = string.Empty });
             }
 
             DeckNames = new List<string>
@@ -65,7 +66,7 @@ namespace PioneerLigan.Pages.LeagueEvents
         public List<League> Leagues { get; set; } = new List<League>();
         public List<Player> Players { get; set; } = new List<Player>();
         public int SelectedLeague { get; set; }
-        public List<DeckInfo> DeckInfoList { get; set; }
+        public List<Deck> DeckInfoList { get; set; }
         public List<string> DeckNames { get; set; }
 
 
@@ -86,7 +87,6 @@ namespace PioneerLigan.Pages.LeagueEvents
             LoadData();
 
             LeagueEvent.LeagueID = SelectedLeague;
-            LeagueEvent.MetaGame = JsonConvert.SerializeObject(DeckInfoList);
 
             string filePath = @"C:\Sites\Logs\CreateEventLog.txt";
 
@@ -221,7 +221,7 @@ namespace PioneerLigan.Pages.LeagueEvents
                 }
             }
 
-            return RedirectToPage("./");
+            return RedirectToPage("../MetaGame/Create", new { leagueEventId = LeagueEvent.Id });
         }
 
         private string ExtractPlayerName(string cellText)
