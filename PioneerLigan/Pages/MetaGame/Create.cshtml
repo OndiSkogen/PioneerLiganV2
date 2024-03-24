@@ -34,17 +34,17 @@
                 <span asp-validation-for="Deck.Name" class="text-danger"></span>
             </div>
 
-            <!-- Deck SuperArcheType Dropdown -->
+            <!-- Deck SuperArchType Dropdown -->
             <div class="form-group">
-                <label asp-for="Deck.SuperArcheType"></label>
-                <select asp-for="Deck.SuperArcheType" class="form-control">
-                    <option value="">-- Select SuperArcheType --</option>
-                    @foreach (var superArcheType in Enum.GetNames(typeof(Constants.SuperArcheType)))
+                <label asp-for="Deck.SuperArchType"></label>
+                <select asp-for="Deck.SuperArchType" class="form-control">
+                    <option value="">-- Select SuperArchType --</option>
+                    @foreach (var superArchType in Enum.GetNames(typeof(Constants.SuperArchType)))
                     {
-                        <option value="@superArcheType">@superArcheType</option>
+                        <option value="@superArchType">@superArchType</option>
                     }
                 </select>
-                <span asp-validation-for="Deck.SuperArcheType" class="text-danger"></span>
+                <span asp-validation-for="Deck.SuperArchType" class="text-danger"></span>
             </div>
 
             <!-- Deck ColorAffiliation Dropdown -->
@@ -73,12 +73,13 @@
         </form>
     </div>
     <div class="col-md-6">
-        @foreach (var deck in Model.MetaGame.Decks)
+        <div>
+            League event date: @Model.MetaGame.LeagueEvent.Date.ToString("dd/MM/yyyy")
+        </div>
+        @foreach (var deck in Model.DeckCounts)
         {
             <div>
-                <h4>@deck.Name</h4>
-                <p>SuperArcheType: @deck.SuperArcheType</p>
-                <p>ColorAffiliation: @deck.ColorAffiliation</p>
+                <h4>@deck.Key X @deck.Value</h4>
             </div>
         }
     </div>

@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        //public struct SuperArcheType
+        //public struct SuperArchType
         //{
         //    public const string AGGRO = "Aggro";
         //    public const string CONROL = "Control";
@@ -42,7 +42,7 @@
         //    public const string FOURCOLOR = "4-Color";
         //    public const string FIVECOLOR = "5-Color";
         //}
-        public enum SuperArcheType
+        public enum SuperArchType
         {
             Aggro,
             Control,

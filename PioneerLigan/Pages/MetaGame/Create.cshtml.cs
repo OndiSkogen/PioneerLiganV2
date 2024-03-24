@@ -28,6 +28,7 @@ namespace PioneerLigan.Pages.MetaGame
         // Retrieve LeagueEventId from query string
         public List<Deck> ExistingDecks { get; set; }
         public int MetaGameId { get; set; }
+        public Dictionary<string, int> DeckCounts { get; set; }
 
         public IActionResult OnGet(int leagueEventId, int metaGameId)
         {
@@ -46,6 +47,11 @@ namespace PioneerLigan.Pages.MetaGame
                 if (MetaGame == null)
                 {
                     return RedirectToPage("./Index");
+                }
+
+                foreach (var deck in MetaGame.Decks)
+                {
+                    AddDeckToMetaGame(deck.Name);
                 }
             }
             else
@@ -88,7 +94,7 @@ namespace PioneerLigan.Pages.MetaGame
                         var newDeck = new Deck
                         {
                             Name = selectedDeck.Name,
-                            SuperArcheType = selectedDeck.SuperArcheType,
+                            SuperArchType = selectedDeck.SuperArchType,
                             ColorAffiliation = selectedDeck.ColorAffiliation,
                             MetaGame = MetaGame
                         };
@@ -104,7 +110,7 @@ namespace PioneerLigan.Pages.MetaGame
                     var newDeck = new Deck
                     {
                         Name = Deck.Name,
-                        SuperArcheType = Deck.SuperArcheType,
+                        SuperArchType = Deck.SuperArchType,
                         ColorAffiliation = Deck.ColorAffiliation,
                         MetaGame = MetaGame
                     };
@@ -133,6 +139,20 @@ namespace PioneerLigan.Pages.MetaGame
             ExistingDecks = allDecks.GroupBy(deck => deck.Name)
                                     .Select(group => group.First())
                                     .ToList();
+
+            DeckCounts = new Dictionary<string, int>();
+        }
+
+        private void AddDeckToMetaGame(string deckName)
+        {
+            if (DeckCounts.ContainsKey(deckName))
+            {
+                DeckCounts[deckName]++;
+            }
+            else
+            {
+                DeckCounts[deckName] = 1;
+            }
         }
     }
 }
