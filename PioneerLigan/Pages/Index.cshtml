@@ -82,7 +82,7 @@
     @if (Model.MetaGame != null)
     {
         <div class="col-sm-6 col-12 mb-3" id="metaGame">
-            <h2>Metagame for event on @Model.MetaGame.EventDate.ToString("dd/MM/yy")</h2>
+            <h2>Metagame for event on @Model.LatestEvent.ToString("dd/MM/yy")</h2>
             <table class="table table-striped table-dark table-responsive-stack" id="tableAll">
                 <thead>
                     <tr>
@@ -92,12 +92,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var deck in Model.MetaGame.Decks)
+                    @foreach (var deck in Model.MetaGame)
                     {
                         <tr>
-                            <th scope="row">@deck.Name</th>
-                            <td class="text-end">@deck.Count</td>
-                            <td class="text-end">@deck.Percentage</td>
+                            <th scope="row">@deck.Key</th>
+                            <td class="text-end">@deck.Value</td>
                         </tr>
                     }
                 </tbody>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using PioneerLigan.Data;
 using PioneerLigan.ViewModels;
 
@@ -18,7 +19,8 @@ namespace PioneerLigan.Pages
 
         public List<_LeagueVM> LeagueVMs { get; set; } = new List<_LeagueVM>();
         public List<_PlayerVM> TopPlayers { get; set; } = new List<_PlayerVM>();
-        public _MetaGameVM? MetaGame { get; set; }
+        public Dictionary<string, int> MetaGame { get; set; }
+        public DateTime LatestEvent { get; set; }
 
         public void OnGet()
         {
@@ -29,6 +31,9 @@ namespace PioneerLigan.Pages
                 var topPlayers = players.OrderByDescending(p => p.Points).Take(10).ToList();
                 var eventResults = from e in _context.EventResults select e;
                 var events = from e in _context.LeagueEvents select e;
+                var metagames = _context.MetaGames
+                                .Include(m => m.Decks)
+                                .ToList();
 
                 foreach (var player in topPlayers)
                 {
@@ -54,14 +59,38 @@ namespace PioneerLigan.Pages
 
                 if (events.Any())
                 {
-                    //var daEvent = events.OrderByDescending(e => e.Date).First();
-                    //MetaGame = new _MetaGameVM(daEvent.MetaGame, daEvent.Date);
-                    MetaGame = null;
+                    var daEvent = events.OrderByDescending(e => e.Date).First();
+                    LatestEvent = daEvent.Date;
+                    var metaGame = metagames.Where(m => m.LeagueEvent.Id == daEvent.Id).FirstOrDefault();
+                    if (metaGame == null)
+                    {
+                        MetaGame = new Dictionary<string, int>();
+                    }
+                    else
+                    {
+                        MetaGame = new Dictionary<string, int>();
+                        foreach (var deck in metaGame.Decks)
+                        {
+                            AddDeckToMetaGame(deck.Name);
+                        }
+                    }
                 }
                 else
                 {
-                    MetaGame = null;
+                    MetaGame = new Dictionary<string, int>();
                 }
+            }
+        }
+
+        private void AddDeckToMetaGame(string deckName)
+        {
+            if (MetaGame.ContainsKey(deckName))
+            {
+                MetaGame[deckName]++;
+            }
+            else
+            {
+                MetaGame[deckName] = 1;
             }
         }
     }
