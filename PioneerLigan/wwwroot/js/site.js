@@ -75,44 +75,35 @@ $(document).ready(function () {
     }
 
     $('#add-deck').click(function (e) {
-        e.preventDefault(); // Prevent the default form submission
+        e.preventDefault();
 
         console.log("add deck button clicked");
         var deck = {};
 
-        // Check if a deck is selected from the existing decks dropdown
         var selectedDeckId = $('#deck-id').val();
         if (selectedDeckId !== "") {
-            // Add the selected existing deck to the existing decks array
             existingDecks.push({
                 id: selectedDeckId,
                 name: $('#deck-id option:selected').text()
             });
             addDeck($('#deck-id option:selected').text());
         } else {
-            // Collect data for a new deck
             deck.name = $('#deck-name').val();
             deck.superArchType = $('#deck-arch-typ').val();
             deck.colorAffiliation = $('#deck-color').val();
 
-            // Add the new deck to the new decks array
             newDecks.push(deck);
             addDeck(deck.name);
         }
 
-        // Clear the form fields for adding a new deck
         $('#deck-name').val("");
         $('#deck-arch-typ').val("");
         $('#deck-color').val("");
-
-        console.log("new deck added: ", deck);
     });
 
     $('#done-btn').click(function (e) {
-        e.preventDefault(); // Prevent the default form submission
-        console.log("done button clicked");
+        e.preventDefault();
 
-        // Send both arrays in the same AJAX call
         var postData = {
             newDecks: newDecks,
             existingDecks: existingDecks,
@@ -120,10 +111,9 @@ $(document).ready(function () {
         };
 
         var token = $('input[name="__RequestVerificationToken"]').val();
-        console.log("Calling AJAX with token: ", token);
 
         $.ajax({
-            url: '/MetaGame/Create?handler=UpdateData', // Adjust the URL as needed
+            url: '/MetaGame/Create?handler=UpdateData',
             type: 'POST',
             headers: {
                 RequestVerificationToken: token
@@ -132,16 +122,11 @@ $(document).ready(function () {
             async: true,
             data: JSON.stringify(postData),
             success: function (response) {
-                // Handle success response
-                console.log('success', response);
                 window.location.href = '/';
             },
-            error: function (xhr, status, error) {
-                // Handle error
+            error: function (xhr, status, error) {                
                 console.log('error', error);
             }
         });
-
-        console.log("Run complete");
     });
 });

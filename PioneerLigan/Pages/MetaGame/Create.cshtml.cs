@@ -106,44 +106,6 @@ namespace PioneerLigan.Pages.MetaGame
             return BadRequest("Invalid data received");            
         }
 
-        public async Task<IActionResult> UpdateData([FromBody] MetaGameData metaGameData)
-        {
-            if (metaGameData != null)
-            {
-                foreach (var newDeck in metaGameData.NewDecks)
-                {
-                    _context.Decks.Add(newDeck);
-                }
-
-                foreach (var existingDeck in metaGameData.ExistingDecks)
-                {
-                    LoadData();
-                    var selectedDeck = ExistingDecks.FirstOrDefault(d => d.Id == existingDeck.Id);
-                    if (selectedDeck != null)
-                    {
-                        var newDeck = new Deck
-                        {
-                            Name = selectedDeck.Name,
-                            SuperArchType = selectedDeck.SuperArchType,
-                            ColorAffiliation = selectedDeck.ColorAffiliation,
-                            MetaGame = MetaGame
-                        };
-
-                        _context.Decks.Add(newDeck);
-
-                        await _context.SaveChangesAsync();
-                    }
-                }
-
-                _context.Update(MetaGame);
-                _context.SaveChanges();
-
-                return RedirectToPage("./Index");
-            }
-
-            return BadRequest("Invalid data received");
-        }
-
         private void LoadData()
         {
             var allDecks = _context.Decks.ToList();
