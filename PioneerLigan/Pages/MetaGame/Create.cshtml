@@ -13,11 +13,12 @@
 <div class="row">
     <div class="col-md-6">
         <form method="post">
+            @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
                 <label>Select Existing Deck:</label>
-                <select asp-for="Deck.Id" class="form-control">
+                <select asp-for="Deck.Id" class="form-control" id="deck-id">
                     <option value="">-- Select Deck --</option>
                     @foreach (var deck in Model.ExistingDecks)
                     {
@@ -30,14 +31,14 @@
             <!-- Add New Deck Section -->
             <div class="form-group">
                 <label>New Deck Name:</label>
-                <input asp-for="Deck.Name" class="form-control" />
+                <input asp-for="Deck.Name" class="form-control" id="deck-name" />
                 <span asp-validation-for="Deck.Name" class="text-danger"></span>
             </div>
 
             <!-- Deck SuperArchType Dropdown -->
             <div class="form-group">
                 <label asp-for="Deck.SuperArchType"></label>
-                <select asp-for="Deck.SuperArchType" class="form-control">
+                <select asp-for="Deck.SuperArchType" class="form-control" id="deck-arch-typ">
                     <option value="">-- Select SuperArchType --</option>
                     @foreach (var superArchType in Enum.GetNames(typeof(Constants.SuperArchType)))
                     {
@@ -50,7 +51,7 @@
             <!-- Deck ColorAffiliation Dropdown -->
             <div class="form-group">
                 <label asp-for="Deck.ColorAffiliation"></label>
-                <select asp-for="Deck.ColorAffiliation" class="form-control">
+                <select asp-for="Deck.ColorAffiliation" class="form-control" id="deck-color">
                     <option value="">-- Select ColorAffiliation --</option>
                     @foreach (var colorAffiliation in Enum.GetNames(typeof(Constants.ColorAffiliation)))
                     {
@@ -61,14 +62,14 @@
             </div>
 
             <!-- Add Deck Button -->
-            <input type="hidden" name="id" value="@Model.MetaGameId" />
+            <input type="hidden" name="id" value="@Model.LeagueEventId" id="league-event-id" />
             <div class="form-group">
-                <button type="submit" name="action" value="AddDeck" class="btn btn-primary">Add Deck</button>
+                <button type="submit" name="action" value="AddDeck" class="btn btn-primary" id="add-deck">Add Deck</button>
             </div>
 
             <!-- Create Metagame Button -->
             <div class="form-group">
-                <button type="submit" name="action" value="Done" class="btn btn-success">Done</button>
+                <button type="submit" name="action" value="Done" class="btn btn-success" id="done-btn">Done</button>
             </div>
         </form>
     </div>
@@ -76,11 +77,8 @@
         <div>
             League event date: @Model.MetaGame.LeagueEvent.Date.ToString("dd/MM/yyyy")
         </div>
-        @foreach (var deck in Model.DeckCounts)
-        {
-            <div>
-                <h4>@deck.Key X @deck.Value</h4>
-            </div>
-        }
+        <h4>Decks Added:</h4>
+        <ul id="decks-added-list">
+        </ul>
     </div>
 </div>

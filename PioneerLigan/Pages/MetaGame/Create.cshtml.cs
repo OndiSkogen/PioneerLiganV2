@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using PioneerLigan.Data;
 using PioneerLigan.Models;
 using PioneerLigan.Constants;
+using static PioneerLigan.Pages.MetaGame.CreateModel;
 
 namespace PioneerLigan.Pages.MetaGame
 {
+    [ValidateAntiForgeryToken]
     public class CreateModel : PageModel
     {
         private readonly ApplicationDbContext _context;
@@ -25,34 +27,19 @@ namespace PioneerLigan.Pages.MetaGame
         [BindProperty]
         public Deck Deck { get; set; }
 
-        // Retrieve LeagueEventId from query string
-        public List<Deck> ExistingDecks { get; set; }
-        public int MetaGameId { get; set; }
-        public Dictionary<string, int> DeckCounts { get; set; }
 
-        public IActionResult OnGet(int leagueEventId, int metaGameId)
+        public List<Deck> ExistingDecks { get; set; }
+        public int LeagueEventId { get; set; }
+
+        public IActionResult OnGet(int leagueEventId)
         {
             LoadData();
 
             if (leagueEventId != 0)
             {
-                MetaGame = new Models.MetaGame();
-                MetaGame.LeagueEvent = _context.LeagueEvents.FirstOrDefault(e => e.Id == leagueEventId);
-                MetaGameId = MetaGame.Id;
-            }
-            else if (metaGameId != 0)
-            {
-                MetaGame = _context.MetaGames.FirstOrDefault(m => m.Id == metaGameId);
-                MetaGameId = metaGameId;
-                if (MetaGame == null)
-                {
-                    return RedirectToPage("./Index");
-                }
-
-                foreach (var deck in MetaGame.Decks)
-                {
-                    AddDeckToMetaGame(deck.Name);
-                }
+                LeagueEventId = leagueEventId;
+                var leagueEvent = _context.LeagueEvents.FirstOrDefault(e => e.Id == leagueEventId);
+                MetaGame = _context.MetaGames.FirstOrDefault(m => m.LeagueEvent == leagueEvent);
             }
             else
             {
@@ -63,32 +50,75 @@ namespace PioneerLigan.Pages.MetaGame
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string action, int id)
+        public async Task<IActionResult> OnPostAsync([FromBody] MetaGameData metaGameData)
         {
-            if (action == "AddDeck")
+            if (metaGameData != null)
             {
-                if (MetaGame == null || Deck == null)
+                var leagueEvent = _context.LeagueEvents.FirstOrDefault(e => e.Id == metaGameData.LeagueEventId);
+                MetaGame = _context.MetaGames.FirstOrDefault(m => m.LeagueEvent == leagueEvent);
+                
+                if (MetaGame == null && leagueEvent != null)
                 {
-                    LoadData();
-                    return Page();
-                }
-
-                if (id != 0)
-                {
-                    MetaGame = _context.MetaGames.FirstOrDefault(m => m.Id == id);
-                }
-
-                if (MetaGame.Id == 0)
-                {
+                    MetaGame = new Models.MetaGame();
+                    MetaGame.LeagueEvent = leagueEvent;
                     _context.MetaGames.Add(MetaGame);
                     await _context.SaveChangesAsync();
                 }
 
-                if (Deck.Id != 0)
+                if (MetaGame != null)
                 {
-                    // User selected an existing deck
+                    foreach (var newDeck in metaGameData.NewDecks)
+                    {
+                        MetaGame.Decks.Add(newDeck);
+                        _context.Decks.Add(newDeck);
+                    }
+
+                    foreach (var existingDeck in metaGameData.ExistingDecks)
+                    {
+                        LoadData();
+                        var selectedDeck = ExistingDecks.FirstOrDefault(d => d.Id == existingDeck.Id);
+                        if (selectedDeck != null)
+                        {
+                            var newDeck = new Deck
+                            {
+                                Name = selectedDeck.Name,
+                                SuperArchType = selectedDeck.SuperArchType,
+                                ColorAffiliation = selectedDeck.ColorAffiliation,
+                                MetaGame = MetaGame
+                            };
+
+                            MetaGame.Decks.Add(newDeck);
+                            _context.Decks.Add(newDeck);
+
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+
+                    _context.Update(MetaGame);
+                    _context.SaveChanges();
+
+                    return RedirectToPage("./Index");
+                }
+
+                return BadRequest("Can't find league event.");
+            }
+
+            return BadRequest("Invalid data received");            
+        }
+
+        public async Task<IActionResult> UpdateData([FromBody] MetaGameData metaGameData)
+        {
+            if (metaGameData != null)
+            {
+                foreach (var newDeck in metaGameData.NewDecks)
+                {
+                    _context.Decks.Add(newDeck);
+                }
+
+                foreach (var existingDeck in metaGameData.ExistingDecks)
+                {
                     LoadData();
-                    var selectedDeck = ExistingDecks.FirstOrDefault(d => d.Id == Deck.Id);
+                    var selectedDeck = ExistingDecks.FirstOrDefault(d => d.Id == existingDeck.Id);
                     if (selectedDeck != null)
                     {
                         var newDeck = new Deck
@@ -101,35 +131,17 @@ namespace PioneerLigan.Pages.MetaGame
 
                         _context.Decks.Add(newDeck);
 
-                        _context.Update(MetaGame);
                         await _context.SaveChangesAsync();
                     }
                 }
-                else
-                {
-                    var newDeck = new Deck
-                    {
-                        Name = Deck.Name,
-                        SuperArchType = Deck.SuperArchType,
-                        ColorAffiliation = Deck.ColorAffiliation,
-                        MetaGame = MetaGame
-                    };
 
-                    _context.Decks.Add(newDeck);
+                _context.Update(MetaGame);
+                _context.SaveChanges();
 
-                    _context.Update(MetaGame);
-                    await _context.SaveChangesAsync();
-                }
-
-                return RedirectToPage("../MetaGame/Create", new { metaGameId = MetaGame.Id });
-            }
-            else if (action == "Done")
-            {                
-                return RedirectToPage("/Index");
+                return RedirectToPage("./Index");
             }
 
-            LoadData();
-            return Page();
+            return BadRequest("Invalid data received");
         }
 
         private void LoadData()
@@ -139,20 +151,18 @@ namespace PioneerLigan.Pages.MetaGame
             ExistingDecks = allDecks.GroupBy(deck => deck.Name)
                                     .Select(group => group.First())
                                     .ToList();
-
-            DeckCounts = new Dictionary<string, int>();
         }
 
-        private void AddDeckToMetaGame(string deckName)
+        public class MetaGameData
         {
-            if (DeckCounts.ContainsKey(deckName))
-            {
-                DeckCounts[deckName]++;
-            }
-            else
-            {
-                DeckCounts[deckName] = 1;
-            }
+            public List<Deck> NewDecks { get; set; } = new List<Deck>();
+            public List<ExistingDeck> ExistingDecks { get; set; } = new List<ExistingDeck>();
+            public int LeagueEventId { get; set; }
+        }
+
+        public class ExistingDeck
+        {
+            public int Id { get; set; }
         }
     }
 }

@@ -100,6 +100,10 @@ namespace PioneerLigan.Pages.LeagueEvents
             }
 
             _context.LeagueEvents.Add(LeagueEvent);
+            _context.MetaGames.Add(new Models.MetaGame
+            {
+                LeagueEvent = LeagueEvent,
+            });
             await _context.SaveChangesAsync();
 
             var doc = new HtmlDocument();
