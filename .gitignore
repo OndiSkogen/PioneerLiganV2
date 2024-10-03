@@ -39,3 +39,5 @@ msbuild.wrn
 /PioneerLigan/ScaffoldingReadMe.txt
 /PioneerLigan/wwwroot/js/typeahead.bundle.js
 /PioneerLigan/wwwroot/lib/
+
+appsettings*
