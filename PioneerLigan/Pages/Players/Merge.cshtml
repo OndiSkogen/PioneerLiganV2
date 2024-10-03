@@ -1,0 +1,43 @@
+﻿@page
+@model PioneerLigan.Pages.Players.MergeModel
+@{
+    ViewData["Title"] = "Merge players";
+}
+
+<h1>Merge Players</h1>
+
+<h4>Select players</h4>
+<hr />
+<div class="row">
+    <div class="col-md6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label>Select Player 1</label>
+                <select asp-for="Player1.Id" class="form-control" id="player1">
+                    <option value="">--- Select Player ---</option>
+                    @foreach (var player in Model.Players)
+                    {
+                        <option value="@player.Id">@player.PlayerName</option>
+                    }
+                </select>
+                <span asp-validation-for="Player1" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Select Player 2</label>
+                <select asp-for="Player2.Id" class="form-control" id="player2">
+                    <option value="">--- Select Player ---</option>
+                    @foreach (var player in Model.Players)
+                    {
+                        <option value="@player.Id">@player.PlayerName</option>
+                    }
+                </select>
+                <span asp-validation-for="Player2" class="text-danger"></span>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>

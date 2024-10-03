@@ -14,9 +14,9 @@ namespace PioneerLigan.Pages.Players
     [Authorize]
     public class CreateModel : PageModel
     {
-        private readonly PioneerLigan.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CreateModel(PioneerLigan.Data.ApplicationDbContext context)
+        public CreateModel(ApplicationDbContext context)
         {
             _context = context;
         }

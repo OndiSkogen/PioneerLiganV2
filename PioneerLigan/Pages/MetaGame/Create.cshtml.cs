@@ -95,7 +95,7 @@ namespace PioneerLigan.Pages.MetaGame
                     }
 
                     _context.Update(MetaGame);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
                     return RedirectToPage("./Index");
                 }
@@ -112,6 +112,7 @@ namespace PioneerLigan.Pages.MetaGame
 
             ExistingDecks = allDecks.GroupBy(deck => deck.Name)
                                     .Select(group => group.First())
+                                    .OrderByDescending(d => d.Name)
                                     .ToList();
         }
 

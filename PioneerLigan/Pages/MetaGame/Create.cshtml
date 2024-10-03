@@ -19,7 +19,7 @@
             <div class="form-group">
                 <label>Select Existing Deck:</label>
                 <select asp-for="Deck.Id" class="form-control" id="deck-id">
-                    <option value="">-- Select Deck --</option>
+                    <option value="">--- Select Deck ---</option>
                     @foreach (var deck in Model.ExistingDecks)
                     {
                         <option value="@deck.Id">@deck.Name</option>
@@ -52,7 +52,7 @@
             <div class="form-group">
                 <label asp-for="Deck.ColorAffiliation"></label>
                 <select asp-for="Deck.ColorAffiliation" class="form-control" id="deck-color">
-                    <option value="">-- Select ColorAffiliation --</option>
+                    <option value="">-- Select Color Affiliation --</option>
                     @foreach (var colorAffiliation in Enum.GetNames(typeof(Constants.ColorAffiliation)))
                     {
                         <option value="@colorAffiliation">@colorAffiliation</option>

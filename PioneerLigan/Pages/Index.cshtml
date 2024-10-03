@@ -17,9 +17,11 @@
 </div>
 <div claclass="row">
     <div class="col-12">
-        Spring time! The first spring league of this year will be played over 10 weeks with the final event being played on 26/3. 
-        This league the top 8 players from the standings will be qualified for the finals. A date for the final has not been set yet, but expect it to be early April.<br />
-
+        <h2>Autumn again!</h2><br />
+        The autumn league will be run with 15 events starting on 20/8 and the final event will be 26/11.<br />
+        Each players 9 best results will count for the final standings after which the top 12 players will be qualified for the final and<br />
+        4 players will qualify from the qualifier tournament. Date qualifier is 30/11 and date for the final is 1/12.<br />
+        <br />
         Entry for one event is 30kr. Proceeds will be added to the prize pool for the grand final.
     </div>
 </div>
@@ -27,9 +29,8 @@
     <div class="col-sm-6 col-12 mb-3">
         <h5>Prizes per event (store credit):</h5>
         <ol>
-            <li>4-0: 100kr</li>
-            <li>3-0-1: 75kr</li>
-            <li>3-1: 50kr</li>
+            <li>4-0: 50kr</li>
+            <li>3-0-1 and 3-1: 25kr</li>
         </ol>
     </div>
     <div class="col-sm-6 col-12 mb-3">
@@ -135,7 +136,7 @@
                 <tbody>
                     @foreach (var p in league.PlayersVMs)
                     {
-                        @if (count < 17)
+                        @if (count < 13)
                         {
                             <tr>
                                 <th class="green-text" scope="row">@count</th>
