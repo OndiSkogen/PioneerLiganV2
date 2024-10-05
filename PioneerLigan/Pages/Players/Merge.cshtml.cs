@@ -62,6 +62,19 @@ namespace PioneerLigan.Pages.Players
                 existingPlayer1.Losses += existingPlayer2.Losses;
                 existingPlayer1.Ties += existingPlayer2.Ties;
 
+                var events = _context.EventResults.ToList();
+
+                foreach (var e in events)
+                {
+                    if (e.PlayerId == player2.Id)
+                    {
+                        e.PlayerId = player1.Id;
+                        e.PlayerName = player1.PlayerName;
+
+                        _context.EventResults.Update(e);
+                    } 
+                }
+
                 _context.Players.Update(existingPlayer1);
                 _context.Players.Remove(existingPlayer2);
                 await _context.SaveChangesAsync();
