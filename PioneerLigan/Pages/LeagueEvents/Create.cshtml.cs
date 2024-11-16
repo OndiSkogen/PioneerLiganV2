@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using PioneerLigan.Data;
-using PioneerLigan.HelperClasses;
 using PioneerLigan.Models;
+using System.Text.RegularExpressions;
 
 namespace PioneerLigan.Pages.LeagueEvents
 {
@@ -73,16 +65,14 @@ namespace PioneerLigan.Pages.LeagueEvents
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            var leagueId = Request.Form["league-id"];
+            var hasLeagueId = int.TryParse(Request.Form["league-id"], out var leagueId);
 
-
-
-            SelectedLeague = int.Parse(Request.Form["league-id"]);
-
-            if (!ModelState.IsValid || _context.LeagueEvents == null || _context.EventResults == null || _context.Players == null || SelectedLeague == 0)
+            if (!ModelState.IsValid || _context.LeagueEvents == null || _context.EventResults == null || _context.Players == null || !hasLeagueId)
             {
                 return Page();
             }
+
+            SelectedLeague = leagueId;
 
             LoadData();
 
