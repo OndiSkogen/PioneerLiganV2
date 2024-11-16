@@ -141,15 +141,15 @@ namespace PioneerLigan.Pages.LeagueEvents
                                     break;
                                 case 4:
                                     temp = cellText.Split('%');
-                                    eventResult.OMW = decimal.Parse(temp[0]);
+                                    eventResult.OMW = decimal.Parse(temp[0].Replace('.', ',').Trim());
                                     break;
                                 case 5:
                                     temp = cellText.Split('%');
-                                    eventResult.GW = decimal.Parse(temp[0]);
+                                    eventResult.GW = decimal.Parse(temp[0].Replace('.', ',').Trim());
                                     break;
                                 case 6:
                                     temp = cellText.Split('%');
-                                    eventResult.OGW = decimal.Parse(temp[0]);
+                                    eventResult.OGW = decimal.Parse(temp[0].Replace('.', ',').Trim());
                                     break;
                                 default:
                                     break;
